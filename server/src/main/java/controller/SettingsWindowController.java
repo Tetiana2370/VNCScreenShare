@@ -123,7 +123,7 @@ public class SettingsWindowController extends JFrame {
 
             if (!errorsOccurred) {
                 this.connectionParams.setQuality(quality);
-                this.connectionParams.setQuality(previewScale);
+                this.connectionParams.setScale(previewScale);
                 this.connectionParams.setFramesPerSecond(framesPerSecond);
                 super.dispose();
                 this.stateUpdated = true;

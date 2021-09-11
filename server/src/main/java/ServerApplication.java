@@ -1,51 +1,61 @@
-import model.*;
-import view.ServerMainWindow;
+import controller.MainWindowController;
+import controller.SettingsWindowController;
+import model.ConnectionParams;
+import model.ScreenshotReceiverThread;
+import model.ServerConnection;
 
 import javax.swing.*;
-import java.net.DatagramPacket;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.text.ParseException;
 
 public class ServerApplication {
+    private static MainWindowController mainWindowController;
 
-    private static ServerMainWindow mainWindow;
-    private static Process vncProcess;
+    public static void main(String[] args) throws Exception {
 
-    public static void main(String[] args) {
-        createClientWindow();
-        Runtime.getRuntime().addShutdownHook(new ProcessTerminator(vncProcess, VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME));
+        ConnectionParams connectionParams = runSettingsWindowAndWaitForDataEnter();
+        ServerConnection serverConnection = new ServerConnection(connectionParams);
+        ServerSocket serverSocket = serverConnection.getServerSocket();
 
-        while (Thread.currentThread().isAlive()) {
-            DatagramPacket datagramPacket = MulticastMessageListener.listen();
+        createAndShowMainWindow(connectionParams);
 
-            if(datagramPacket != null){
-                ConnectionParams connectionParams = getConnectionParamsFromDatagramMessage(datagramPacket);
-                updateMainWindowLabel(ServerMainWindow.CONNECTION_ACTIVE_LABEL);
-                try{
-                    vncProcess = VNCServerProcessBuilder.startProcess(connectionParams.getPasswordForVNC());
-                    PreviewSharingConnection previewSharingConnection = new PreviewSharingConnection(datagramPacket.getAddress().getHostAddress(), connectionParams.getPort(), connectionParams);
-                    previewSharingConnection.runServerThreadsAndWaitUntilInterrupted();
-                    runVNCProcessTermination();
-                } catch (Exception e) {
-                    Report.println(e.getMessage());
-                }
-                updateMainWindowLabel(ServerMainWindow.CONNECTION_LOST_LABEL);
+        while (true) {
+            Socket socket = serverSocket.accept();
+            String ipAddress = socket.getInetAddress().toString().substring(1);
+            if (mainWindowController.isConnected(ipAddress)) {
+                socket.close();
+                continue;
             }
-
+            startThreadsForNewConnection(socket, ipAddress, connectionParams);
+            mainWindowController.addNewConnectionToList(ipAddress);
+            mainWindowController.setConnectionState(ipAddress, connectionParams);
         }
     }
 
-    private static void updateMainWindowLabel(String text) {
-        SwingUtilities.invokeLater(() -> mainWindow.setLabelText(text));
+    private static ConnectionParams runSettingsWindowAndWaitForDataEnter() throws InterruptedException, ParseException {
+        ConnectionParams connectionParams = new ConnectionParams();
+        SettingsWindowController settingsWindowController = new SettingsWindowController(connectionParams);
+        while (!settingsWindowController.isUpdated()) {
+            Thread.sleep(1000);
+        }
+        return settingsWindowController.getConnectionParams();
     }
 
-    private static void createClientWindow() {
-        SwingUtilities.invokeLater(() -> mainWindow = new ServerMainWindow());
+    private static void createAndShowMainWindow(ConnectionParams connectionParams) throws InvocationTargetException, InterruptedException {
+        SwingUtilities.invokeAndWait(() -> mainWindowController = new MainWindowController(connectionParams));
     }
 
-    private static void runVNCProcessTermination(){
-        new ProcessTerminator(vncProcess, VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME).start();
+    private static void startThreadsForNewConnection(Socket socket, String ipAddress, ConnectionParams connectionParams) throws IOException {
+        ObjectInputStream inputStream = createInputStream(socket);
+        new Thread(new ScreenshotReceiverThread(ipAddress, inputStream, mainWindowController)).start();
     }
 
-    private static ConnectionParams getConnectionParamsFromDatagramMessage(DatagramPacket datagramPacket){
-        return ConnectionParams.from(new String(datagramPacket.getData(), 0, datagramPacket.getLength()));
+    private static ObjectInputStream createInputStream(Socket socket) throws IOException {
+        return new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 }

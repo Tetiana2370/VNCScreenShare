@@ -1,7 +1,6 @@
 package model;
 
 import java.net.ServerSocket;
-
 public class ServerConnection {
 
     private int serverPort;
