@@ -1,6 +1,6 @@
 package controller;
 
-import model.ConnectionParams;
+import model.ConnectionParameters;
 import model.Event;
 import model.ProcessTerminator;
 import model.VNCViewerProcess;
@@ -21,13 +21,13 @@ public class MainWindowController {
     private MainWindow mainWindow;
 
     private String activeVNCConnection;
-    Map<String, ConnectionParams> ipAddressToStateMap;
+    Map<String, ConnectionParameters> ipAddressToStateMap;
     private PreviewsPanelController previewsPanelController;
     private LogsPanelController logsPanelController;
     private VNCViewerProcess vncViewerProcess;
-    private ConnectionParams connectionParams;
+    private ConnectionParameters connectionParams;
 
-    public MainWindowController(ConnectionParams connectionParams) {
+    public MainWindowController(ConnectionParameters connectionParams) {
         this.connectionParams = connectionParams;
         this.ipAddressListModel = new DefaultListModel<>();
         this.connectedIpAddressList = new ArrayList<>();
@@ -56,7 +56,7 @@ public class MainWindowController {
         }
     }
 
-    public void setConnectionState(String ipAddress, ConnectionParams connectionParams) {
+    public void setConnectionState(String ipAddress, ConnectionParameters connectionParams) {
         ipAddressToStateMap.put(ipAddress, connectionParams);
     }
 

@@ -3,7 +3,7 @@ package model;
 import java.io.*;
 import java.util.Base64;
 
-public class ConnectionParams implements Serializable {
+public class ConnectionParameters implements Serializable {
     
 
     public static final float DEFAULT_SCREENSHOT_SCALE = 0.2f;
@@ -20,7 +20,7 @@ public class ConnectionParams implements Serializable {
     private int port;
     private boolean hasChanged;
 
-    public ConnectionParams() {
+    public ConnectionParameters() {
         this.scale = DEFAULT_SCREENSHOT_SCALE;
         this.framesPerSecond = DEFAULT_FRAMES_PER_SECOND;
         this.hasChanged = true;
@@ -70,10 +70,10 @@ public class ConnectionParams implements Serializable {
         return this.passwordForVNC;
     }
 
-    public static String convertToString(ConnectionParams connectionParams) {
+    public static String convertToString(ConnectionParameters connectionParameters) {
         try (final ByteArrayOutputStream baos = new ByteArrayOutputStream();
              ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-            oos.writeObject(connectionParams);
+            oos.writeObject(connectionParameters);
             return Base64.getEncoder().encodeToString(baos.toByteArray());
         } catch (final IOException e) {
             e.printStackTrace();
@@ -81,10 +81,10 @@ public class ConnectionParams implements Serializable {
         }
     }
 
-    public static ConnectionParams from(final String connectionParamsString) {
+    public static ConnectionParameters from(final String connectionParamsString) {
         final byte[] data = Base64.getDecoder().decode(connectionParamsString);
         try (final ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))) {
-            return (ConnectionParams) ois.readObject();
+            return (ConnectionParameters) ois.readObject();
         } catch (final IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;

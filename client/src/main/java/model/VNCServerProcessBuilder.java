@@ -27,8 +27,8 @@ public class VNCServerProcessBuilder {
         commands.add("sh");
         commands.add("-c");
         String vncServerStartCommand = VNC_SERVER_PROCESS_NAME + " "
-                + VNCServerParams.PASSWORD + " " + passwordForVNC + " "
-                + VNCServerParams.KEEP_LISTENING_AFTER_DISCONNECT;
+                + VNCServerParameters.PASSWORD + " " + passwordForVNC + " "
+                + VNCServerParameters.KEEP_LISTENING_AFTER_DISCONNECT;
         commands.add(vncServerStartCommand);
         return commands;
     }

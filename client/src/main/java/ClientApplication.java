@@ -1,12 +1,12 @@
 import model.*;
-import view.ServerMainWindow;
+import view.ClientMainWindow;
 
 import javax.swing.*;
 import java.net.DatagramPacket;
 
 public class ClientApplication {
 
-    private static ServerMainWindow mainWindow;
+    private static ClientMainWindow mainWindow;
     private static Process vncProcess;
 
     public static void main(String[] args) {
@@ -17,8 +17,8 @@ public class ClientApplication {
             DatagramPacket datagramPacket = MulticastMessageListener.listen();
 
             if(datagramPacket != null){
-                ConnectionParams connectionParams = getConnectionParamsFromDatagramMessage(datagramPacket);
-                updateMainWindowLabel(ServerMainWindow.CONNECTION_ACTIVE_LABEL);
+                ConnectionParameters connectionParams = getConnectionParamsFromDatagramMessage(datagramPacket);
+                updateMainWindowLabel(ClientMainWindow.CONNECTION_ACTIVE_LABEL);
                 try{
                     vncProcess = VNCServerProcessBuilder.startProcess(connectionParams.getPasswordForVNC());
                     PreviewSharingConnection previewSharingConnection = new PreviewSharingConnection(datagramPacket.getAddress().getHostAddress(), connectionParams.getPort(), connectionParams);
@@ -27,7 +27,7 @@ public class ClientApplication {
                 } catch (Exception e) {
                     Report.println(e.getMessage());
                 }
-                updateMainWindowLabel(ServerMainWindow.CONNECTION_LOST_LABEL);
+                updateMainWindowLabel(ClientMainWindow.CONNECTION_LOST_LABEL);
             }
 
         }
@@ -38,14 +38,14 @@ public class ClientApplication {
     }
 
     private static void createClientWindow() {
-        SwingUtilities.invokeLater(() -> mainWindow = new ServerMainWindow());
+        SwingUtilities.invokeLater(() -> mainWindow = new ClientMainWindow());
     }
 
     private static void runVNCProcessTermination(){
         new ProcessTerminator(vncProcess, VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME).start();
     }
 
-    private static ConnectionParams getConnectionParamsFromDatagramMessage(DatagramPacket datagramPacket){
-        return ConnectionParams.from(new String(datagramPacket.getData(), 0, datagramPacket.getLength()));
+    private static ConnectionParameters getConnectionParamsFromDatagramMessage(DatagramPacket datagramPacket){
+        return ConnectionParameters.from(new String(datagramPacket.getData(), 0, datagramPacket.getLength()));
     }
 }

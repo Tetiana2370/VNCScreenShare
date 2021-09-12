@@ -1,16 +1,16 @@
 package model;
 
 import java.net.ServerSocket;
-public class ServerConnection {
+public class ClientConnection {
 
     private int serverPort;
     private ServerSocket serverSocket;
-    private final ConnectionParams connectionParams;
+    private final ConnectionParameters connectionParameters;
 
-    public ServerConnection(ConnectionParams connectionParams) throws Exception {
-        this.connectionParams = connectionParams;
+    public ClientConnection(ConnectionParameters connectionParameters) throws Exception {
+        this.connectionParameters = connectionParameters;
         createServerSocket();
-        this.connectionParams.setPort(this.serverPort);
+        this.connectionParameters.setPort(this.serverPort);
     }
 
     void createServerSocket() throws Exception {
@@ -28,7 +28,7 @@ public class ServerConnection {
     }
 
     private void startMulticastThread() {
-        MulticastMessageSender multicastMessageSender = new MulticastMessageSender(this.connectionParams);
+        MulticastMessageSender multicastMessageSender = new MulticastMessageSender(this.connectionParameters);
         new Thread(multicastMessageSender).start();
     }
 
@@ -37,6 +37,6 @@ public class ServerConnection {
     }
 
     public String getPasswordForVNC() {
-        return this.connectionParams.getPasswordForVNC();
+        return this.connectionParameters.getPasswordForVNC();
     }
 }

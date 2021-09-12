@@ -1,6 +1,6 @@
 package controller;
 
-import model.ConnectionParams;
+import model.ConnectionParameters;
 import view.PreviewRenderer;
 import view.PreviewLabel;
 
@@ -16,10 +16,10 @@ public class PreviewsPanelController {
     private final DefaultListModel<PreviewLabel> previewsListModel;
     private final JScrollPane previewsPanel;
     private final MainWindowController mainWindowController;
-    private final ConnectionParams connectionParams;
+    private final ConnectionParameters connectionParams;
 
 
-    public PreviewsPanelController(MainWindowController mainWindowController, ConnectionParams connectionParams) {
+    public PreviewsPanelController(MainWindowController mainWindowController, ConnectionParameters connectionParams) {
         this.previewsListModel = new DefaultListModel<>();
         this.previewsPanel = new JScrollPane(createPreviewsList());
         this.previewsPanel.setBorder(BorderFactory.createTitledBorder(PREVIEWS_PANEL_LABEL));
@@ -42,7 +42,7 @@ public class PreviewsPanelController {
                         return;
                     }
                     if (!mainWindowController.ipAddressToStateMap.containsKey(previewLabel.getIpAddress())) {
-                        mainWindowController.ipAddressToStateMap.put(previewLabel.getIpAddress(), new ConnectionParams());
+                        mainWindowController.ipAddressToStateMap.put(previewLabel.getIpAddress(), new ConnectionParameters());
                         mainWindowController.setActiveVNCConnection(previewLabel.getIpAddress());
                     }
                     runVncProcess(previewLabel.getIpAddress());

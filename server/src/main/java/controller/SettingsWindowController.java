@@ -1,6 +1,6 @@
 package controller;
 
-import model.ConnectionParams;
+import model.ConnectionParameters;
 
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
@@ -28,7 +28,7 @@ public class SettingsWindowController extends JFrame {
     public final static double FRAMES_PER_SECOND_MIN = 1;
     public final static double FRAMES_PER_SECOND_MAX = 20;
 
-    private final ConnectionParams connectionParams;
+    private final ConnectionParameters connectionParams;
     private boolean stateUpdated = false;
     private final JFormattedTextField qualityField;
     private final JFormattedTextField previewScaleField;
@@ -40,7 +40,7 @@ public class SettingsWindowController extends JFrame {
     private final Insets INSETS = new Insets(5, 10, 5, 10);
     private boolean errorsOccurred = false;
 
-    public SettingsWindowController(ConnectionParams connectionParams) throws ParseException {
+    public SettingsWindowController(ConnectionParameters connectionParams) throws ParseException {
         super(TITLE_PREFIX);
         this.connectionParams = connectionParams;
         this.qualityField = createNumericField(QUALITY_SCALE_MIN, QUALITY_SCALE_MAX, 1);
@@ -48,9 +48,9 @@ public class SettingsWindowController extends JFrame {
         this.framesPerSecondField = createNumericField(FRAMES_PER_SECOND_MIN, FRAMES_PER_SECOND_MAX, 0);
         this.saveButton = createSaveButton();
 
-        this.qualityField.setText(String.valueOf(ConnectionParams.DEFAULT_SCREENSHOT_QUALITY));
-        this.previewScaleField.setText(String.valueOf(ConnectionParams.DEFAULT_SCREENSHOT_SCALE));
-        this.framesPerSecondField.setText(String.valueOf(ConnectionParams.DEFAULT_FRAMES_PER_SECOND));
+        this.qualityField.setText(String.valueOf(ConnectionParameters.DEFAULT_SCREENSHOT_QUALITY));
+        this.previewScaleField.setText(String.valueOf(ConnectionParameters.DEFAULT_SCREENSHOT_SCALE));
+        this.framesPerSecondField.setText(String.valueOf(ConnectionParameters.DEFAULT_FRAMES_PER_SECOND));
         setLayout(new GridBagLayout());
         setComponents();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -160,7 +160,7 @@ public class SettingsWindowController extends JFrame {
         }
     }
 
-    public ConnectionParams getConnectionParams() {
+    public ConnectionParameters getConnectionParams() {
         return connectionParams;
     }
 

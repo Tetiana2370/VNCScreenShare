@@ -24,10 +24,10 @@ public class ScreenshotParameters {
         return framesPerSecond;
     }
     
-    public static ScreenshotParameters from(ConnectionParams connectionParams) {
-        double scale = connectionParams.getScale();
-        float quality = connectionParams.getQuality();
-        int framesPerSecond = connectionParams.getFramesPerSecond();
+    public static ScreenshotParameters from(ConnectionParameters connectionParameters) {
+        double scale = connectionParameters.getScale();
+        float quality = connectionParameters.getQuality();
+        int framesPerSecond = connectionParameters.getFramesPerSecond();
         return new ScreenshotParameters(scale, quality, framesPerSecond);
     }
 }

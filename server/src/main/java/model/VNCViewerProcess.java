@@ -10,12 +10,12 @@ public class VNCViewerProcess {
     private Process process;
     public static String SHELL_CMD = "sh";
     public static String COMMAND_CMD = "-c";
-    private final ConnectionParams connectionParams;
+    private final ConnectionParameters connectionParameters;
 
 
-    public VNCViewerProcess(String serverIPAddress, ConnectionParams connectionParams) {
+    public VNCViewerProcess(String serverIPAddress, ConnectionParameters connectionParameters) {
         this.serverIpAddress = serverIPAddress;
-        this.connectionParams = connectionParams;
+        this.connectionParameters = connectionParameters;
     }
 
     public Process start() throws IOException {
@@ -46,7 +46,7 @@ public class VNCViewerProcess {
         try {
             OutputStream outputStream = this.process.getOutputStream();
             PrintStream printStream = new PrintStream(outputStream);
-            printStream.print(this.connectionParams.getPasswordForVNC());
+            printStream.print(this.connectionParameters.getPasswordForVNC());
             printStream.flush();
             printStream.close();
             outputStream.close();

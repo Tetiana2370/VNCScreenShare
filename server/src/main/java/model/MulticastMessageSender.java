@@ -9,9 +9,9 @@ public class MulticastMessageSender implements Runnable {
     private static final String MULTICAST_ADDRESS = "239.255.100.100";
     private static final int UDP_PORT = 30000;
     private DatagramSocket datagramSocket = null;
-    private final ConnectionParams connectionParams;
+    private final ConnectionParameters connectionParams;
 
-    public MulticastMessageSender(ConnectionParams connectionParams) {
+    public MulticastMessageSender(ConnectionParameters connectionParams) {
         this.connectionParams = connectionParams;
     }
 
@@ -19,7 +19,7 @@ public class MulticastMessageSender implements Runnable {
     public void run() {
         try {
             datagramSocket = new DatagramSocket();
-            byte[] message = ConnectionParams.convertToString(connectionParams).getBytes();
+            byte[] message = ConnectionParameters.convertToString(connectionParams).getBytes();
             DatagramPacket datagramPacket =
                     new DatagramPacket(message, message.length, InetAddress.getByName(MULTICAST_ADDRESS), UDP_PORT);
             while (Thread.currentThread().isAlive()) {

@@ -3,20 +3,20 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
-public class ServerMainWindow extends JFrame {
+public class ClientMainWindow extends JFrame {
     public final static int DEFAULT_WINDOW_WIDTH = 500;
     public final static int DEFAULT_WINDOW_HEIGHT = 300;
 
-    public final static String WINDOW_TITLE = "VNCScreenShare Server";
-    public final static String CLIENT_AWAITS_FOR_CONNECTION_LABEL = "Program oczekuje na połączenia wchodządce";
-    public final static String CONNECTION_LOST_LABEL = "Program utracił połączenie z klientem. Trwa próba ponownego połączenia";
-    public final static String CONNECTION_ACTIVE_LABEL = "Program nawiązał połączenie z klientem. " +
+    public final static String WINDOW_TITLE = "VNCScreenShare Client";
+    public final static String CLIENT_AWAITS_FOR_CONNECTION_LABEL = "Program oczekuje na połączenie z serwerem";
+    public final static String CONNECTION_LOST_LABEL = "Program utracił połączenie z serwerem. Trwa próba ponownego połączenia";
+    public final static String CONNECTION_ACTIVE_LABEL = "Program nawiązał połączenie z serwerem. " +
             "Trwa przekazywanie obrazu i kontroli nad myszą i klawiaturą na bieżąco. " +
             "Aby zakończyć przekazywanie, wyłącz aplikację";
 
     private final JLabel textLabel;
 
-    public ServerMainWindow() {
+    public ClientMainWindow() {
         super(WINDOW_TITLE);
         this.textLabel = new JLabel(prepareLabelHtml(CLIENT_AWAITS_FOR_CONNECTION_LABEL), SwingConstants.CENTER);
         this.textLabel.setPreferredSize(new Dimension(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));

@@ -16,8 +16,7 @@ public class PreviewSharingConnection {
     private final Thread screenshotTaker;
     private final Thread screenshotConverter;
     private final Thread screenshotSender;
-
-    public PreviewSharingConnection(String ipAddress, int port, ConnectionParams connectionParams) throws IOException {
+    public PreviewSharingConnection(String ipAddress, int port, ConnectionParameters connectionParams) throws IOException {
         this.ipAddress = ipAddress;
         this.port = port;
         Socket socket = createSocket();

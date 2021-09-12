@@ -1,8 +1,8 @@
 import controller.MainWindowController;
 import controller.SettingsWindowController;
-import model.ConnectionParams;
+import model.ConnectionParameters;
 import model.ScreenshotReceiverThread;
-import model.ServerConnection;
+import model.ClientConnection;
 
 import javax.swing.*;
 import java.io.BufferedInputStream;
@@ -18,9 +18,9 @@ public class ServerApplication {
 
     public static void main(String[] args) throws Exception {
 
-        ConnectionParams connectionParams = runSettingsWindowAndWaitForDataEnter();
-        ServerConnection serverConnection = new ServerConnection(connectionParams);
-        ServerSocket serverSocket = serverConnection.getServerSocket();
+        ConnectionParameters connectionParams = runSettingsWindowAndWaitForDataEnter();
+        ClientConnection clientConnection = new ClientConnection(connectionParams);
+        ServerSocket serverSocket = clientConnection.getServerSocket();
 
         createAndShowMainWindow(connectionParams);
 
@@ -37,8 +37,8 @@ public class ServerApplication {
         }
     }
 
-    private static ConnectionParams runSettingsWindowAndWaitForDataEnter() throws InterruptedException, ParseException {
-        ConnectionParams connectionParams = new ConnectionParams();
+    private static ConnectionParameters runSettingsWindowAndWaitForDataEnter() throws InterruptedException, ParseException {
+        ConnectionParameters connectionParams = new ConnectionParameters();
         SettingsWindowController settingsWindowController = new SettingsWindowController(connectionParams);
         while (!settingsWindowController.isUpdated()) {
             Thread.sleep(1000);
@@ -46,11 +46,11 @@ public class ServerApplication {
         return settingsWindowController.getConnectionParams();
     }
 
-    private static void createAndShowMainWindow(ConnectionParams connectionParams) throws InvocationTargetException, InterruptedException {
+    private static void createAndShowMainWindow(ConnectionParameters connectionParams) throws InvocationTargetException, InterruptedException {
         SwingUtilities.invokeAndWait(() -> mainWindowController = new MainWindowController(connectionParams));
     }
 
-    private static void startThreadsForNewConnection(Socket socket, String ipAddress, ConnectionParams connectionParams) throws IOException {
+    private static void startThreadsForNewConnection(Socket socket, String ipAddress, ConnectionParameters connectionParams) throws IOException {
         ObjectInputStream inputStream = createInputStream(socket);
         new Thread(new ScreenshotReceiverThread(ipAddress, inputStream, mainWindowController)).start();
     }

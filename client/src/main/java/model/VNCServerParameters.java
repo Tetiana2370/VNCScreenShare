@@ -1,6 +1,6 @@
 package model;
 
-public class VNCServerParams {
+public class VNCServerParameters {
 
     public static final String PASSWORD = "-passwd";
     public static final String VIEW_ONLY = "-viewonly";
