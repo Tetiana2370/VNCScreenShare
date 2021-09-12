@@ -42,7 +42,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.vncscreenshare.client.ClientApplication</mainClass>
+                            <mainClass>com.vncscreenshare.server.ServerApplication</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
