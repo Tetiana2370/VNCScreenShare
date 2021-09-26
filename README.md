@@ -16,7 +16,7 @@ Then execute app with
 
 ##ClientApplication
 
-To be able to properly use client application install ***xtightvncviewer***
+To be able to properly use server application install ***xtightvncviewer***
 
 `$ sudo apt-get install xtightvncviewer`
 
