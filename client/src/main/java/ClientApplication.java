@@ -47,7 +47,6 @@ public class ClientApplication {
     }
     private static void runVNCProcessTermination(){
         ProcessTerminator.terminateProcess(vncProcess, VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME);
-        //new ProcessTerminator(vncProcess, VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME).start();
     }
 
     private static ConnectionParameters getConnectionParamsFromDatagramMessage(DatagramPacket datagramPacket){
