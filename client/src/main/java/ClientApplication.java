@@ -23,6 +23,7 @@ public class ClientApplication {
                 updateMainWindowLabel(ClientMainWindow.CONNECTION_ACTIVE_LABEL);
                 try{
                     vncProcess = VNCServerProcessBuilder.startProcess(connectionParams.getPasswordForVNC());
+                    Runtime.getRuntime().addShutdownHook(new ProcessTerminator(vncProcess, VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME));
                     PreviewSharingConnection previewSharingConnection = new PreviewSharingConnection(datagramPacket.getAddress().getHostAddress(), connectionParams.getPort(), connectionParams);
                     previewSharingConnection.runServerThreadsAndWaitUntilInterrupted();
                     runVNCProcessTermination();
@@ -45,7 +46,8 @@ public class ClientApplication {
         SoftwareInstalledChecker.showErrorIfNotInstalled(VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME);
     }
     private static void runVNCProcessTermination(){
-        new ProcessTerminator(vncProcess, VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME).start();
+        ProcessTerminator.terminateProcess(vncProcess, VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME);
+        //new ProcessTerminator(vncProcess, VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME).start();
     }
 
     private static ConnectionParameters getConnectionParamsFromDatagramMessage(DatagramPacket datagramPacket){

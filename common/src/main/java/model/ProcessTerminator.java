@@ -23,4 +23,15 @@ public class ProcessTerminator extends Thread {
             System.out.println(processName + " process destroyed");
         }
     }
+
+    public static void terminateProcess(Process process, String processName){
+        if (process != null && process.isAlive()) {
+            process.descendants()
+                    .forEach(ProcessHandle::destroy);
+            process.children()
+                    .forEach(ProcessHandle::destroy);
+            process.destroy();
+            System.out.println(processName + " process destroyed");
+        }
+    }
 }
