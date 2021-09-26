@@ -1,8 +1,6 @@
 import controller.MainWindowController;
 import controller.SettingsWindowController;
-import model.ConnectionParameters;
-import model.ScreenshotReceiverThread;
-import model.ClientConnection;
+import model.*;
 
 import javax.swing.*;
 import java.io.BufferedInputStream;
@@ -18,6 +16,7 @@ public class ServerApplication {
 
     public static void main(String[] args) throws Exception {
 
+        checkIfVNCViewerIsInstalled();
         ConnectionParameters connectionParams = runSettingsWindowAndWaitForDataEnter();
         ClientConnection clientConnection = new ClientConnection(connectionParams);
         ServerSocket serverSocket = clientConnection.getServerSocket();
@@ -44,6 +43,10 @@ public class ServerApplication {
             Thread.sleep(1000);
         }
         return settingsWindowController.getConnectionParams();
+    }
+
+    private static void checkIfVNCViewerIsInstalled() throws IOException {
+        SoftwareInstalledChecker.showErrorIfNotInstalled(VNCViewerProcess.APP_NAME);
     }
 
     private static void createAndShowMainWindow(ConnectionParameters connectionParams) throws InvocationTargetException, InterruptedException {

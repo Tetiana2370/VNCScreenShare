@@ -3,6 +3,8 @@ package controller;
 import model.ConnectionParameters;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -19,6 +21,7 @@ public class SettingsWindowController extends JFrame {
     public final static String QUALITY_LABEL = "Jakość obrazu (0.1 - 1.0): ";
     public final static String PREVIEW_SCALE_LABEL = "Skala podglądu (0.1 - 0.5): ";
     public final static String FRAMES_PER_SECOND_LABEL = "FPS (1 - 20): ";
+    public final static String FULLSCREEN_MODE_LABEL = "Tryb pełnoekranowy (VNC): ";
     public final static String SAVE_BUTTON_LABEL = "Zapisz";
 
     public final static double PREVIEW_SCALE_MIN = 0.1;
@@ -33,9 +36,11 @@ public class SettingsWindowController extends JFrame {
     private final JFormattedTextField qualityField;
     private final JFormattedTextField previewScaleField;
     private final JFormattedTextField framesPerSecondField;
+    private final JCheckBox fullscreenModeField;
     private final JLabel qualityLabel = new JLabel(QUALITY_LABEL);
     private final JLabel previewScaleLabel = new JLabel(PREVIEW_SCALE_LABEL);
     private final JLabel framesPerSecondLabel = new JLabel(FRAMES_PER_SECOND_LABEL);
+    private final JLabel fullscreenModeLabel = new JLabel(FULLSCREEN_MODE_LABEL);
     private final JButton saveButton;
     private final Insets INSETS = new Insets(5, 10, 5, 10);
     private boolean errorsOccurred = false;
@@ -46,6 +51,7 @@ public class SettingsWindowController extends JFrame {
         this.qualityField = createNumericField(QUALITY_SCALE_MIN, QUALITY_SCALE_MAX, 1);
         this.previewScaleField = createNumericField(PREVIEW_SCALE_MIN, PREVIEW_SCALE_MAX, 1);
         this.framesPerSecondField = createNumericField(FRAMES_PER_SECOND_MIN, FRAMES_PER_SECOND_MAX, 0);
+        this.fullscreenModeField = createCheckBoxField();
         this.saveButton = createSaveButton();
 
         this.qualityField.setText(String.valueOf(ConnectionParameters.DEFAULT_SCREENSHOT_QUALITY));
@@ -80,6 +86,11 @@ public class SettingsWindowController extends JFrame {
         return textField;
     }
 
+    private JCheckBox createCheckBoxField(){
+        JCheckBox checkBox = new JCheckBox();
+        return  checkBox;
+    }
+
     private JButton createSaveButton() {
         JButton button = new JButton(SAVE_BUTTON_LABEL);
         button.addActionListener(event -> setEnteredValues());
@@ -93,15 +104,16 @@ public class SettingsWindowController extends JFrame {
         addLabelAndFieldToGridBag(gbc, this.qualityLabel, this.qualityField);
         addLabelAndFieldToGridBag(gbc, this.previewScaleLabel, this.previewScaleField);
         addLabelAndFieldToGridBag(gbc, this.framesPerSecondLabel, this.framesPerSecondField);
+        addLabelAndFieldToGridBag(gbc, this.fullscreenModeLabel, this.fullscreenModeField);
         addComponent(gbc, this.saveButton);
     }
 
-    private void addLabelAndFieldToGridBag(GridBagConstraints gbc, JLabel label, JTextField textField) {
+    private void addLabelAndFieldToGridBag(GridBagConstraints gbc, JLabel label, JComponent component) {
         gbc.gridx = 0;
         gbc.gridy++;
         add(label, gbc);
         gbc.gridx++;
-        add(textField, gbc);
+        add(component, gbc);
     }
 
     private void addComponent(GridBagConstraints gbc, Component component) {
@@ -125,6 +137,7 @@ public class SettingsWindowController extends JFrame {
                 this.connectionParams.setQuality(quality);
                 this.connectionParams.setScale(previewScale);
                 this.connectionParams.setFramesPerSecond(framesPerSecond);
+                this.connectionParams.setFullscreenMode(this.fullscreenModeField.isSelected());
                 super.dispose();
                 this.stateUpdated = true;
             }

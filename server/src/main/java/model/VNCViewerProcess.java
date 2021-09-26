@@ -10,6 +10,7 @@ public class VNCViewerProcess {
     private Process process;
     public static String SHELL_CMD = "sh";
     public static String COMMAND_CMD = "-c";
+    public static final String APP_NAME = "xtightvncviewer";
     private final ConnectionParameters connectionParameters;
 
 
@@ -24,7 +25,8 @@ public class VNCViewerProcess {
             processBuilder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
             processBuilder.redirectError(ProcessBuilder.Redirect.PIPE);
 
-            String vncViewerParams = VNCViewerParameters.APP_NAME + " " + serverIpAddress + " " + VNCViewerParameters.PASSWORD;
+            String vncViewerParams = APP_NAME + " " + serverIpAddress + " " + VNCViewerParameters.PASSWORD;
+            vncViewerParams += connectionParameters.isFullscreenMode() ? VNCViewerParameters.FULLSCREEN_MODE : "";
             processBuilder.command(SHELL_CMD, COMMAND_CMD, vncViewerParams);
             this.process = processBuilder.start();
             setPassword();

@@ -17,6 +17,7 @@ public class ConnectionParameters implements Serializable {
     private double scale;
     private int framesPerSecond;
     private float quality;
+    private boolean fullscreenMode;
     private int port;
     private boolean hasChanged;
 
@@ -26,6 +27,7 @@ public class ConnectionParameters implements Serializable {
         this.hasChanged = true;
         this.passwordForVNC = PasswordGenerator.generatePassword(VNC_PASSWORD_LENGTH);
         this.quality = DEFAULT_SCREENSHOT_QUALITY;
+        this.fullscreenMode = false;
     }
 
     public void setQuality(float quality) {
@@ -46,6 +48,10 @@ public class ConnectionParameters implements Serializable {
         this.port = port;
     }
 
+    public void setFullscreenMode(boolean fullscreenMode) {
+        this.fullscreenMode = fullscreenMode;
+    }
+
     public int getPort() {
         return port;
     }
@@ -60,6 +66,10 @@ public class ConnectionParameters implements Serializable {
 
     public float getQuality() {
         return quality;
+    }
+
+    public boolean isFullscreenMode() {
+        return fullscreenMode;
     }
 
     public boolean changed() {

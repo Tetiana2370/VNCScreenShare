@@ -2,6 +2,7 @@ import model.*;
 import view.ClientMainWindow;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.DatagramPacket;
 
 public class ClientApplication {
@@ -10,6 +11,7 @@ public class ClientApplication {
     private static Process vncProcess;
 
     public static void main(String[] args) {
+        checkIfVNCServerIsInstalled();
         createClientWindow();
         Runtime.getRuntime().addShutdownHook(new ProcessTerminator(vncProcess, VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME));
 
@@ -29,7 +31,6 @@ public class ClientApplication {
                 }
                 updateMainWindowLabel(ClientMainWindow.CONNECTION_LOST_LABEL);
             }
-
         }
     }
 
@@ -40,7 +41,9 @@ public class ClientApplication {
     private static void createClientWindow() {
         SwingUtilities.invokeLater(() -> mainWindow = new ClientMainWindow());
     }
-
+    private static void checkIfVNCServerIsInstalled() {
+        SoftwareInstalledChecker.showErrorIfNotInstalled(VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME);
+    }
     private static void runVNCProcessTermination(){
         new ProcessTerminator(vncProcess, VNCServerProcessBuilder.VNC_SERVER_PROCESS_NAME).start();
     }
