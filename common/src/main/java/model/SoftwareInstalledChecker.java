@@ -13,7 +13,6 @@ public class SoftwareInstalledChecker {
                 JOptionPane.showMessageDialog(null, message, "Błąd", JOptionPane.ERROR_MESSAGE);
                 System.exit(-1);
             }
-
         } catch (IOException e){
             String message = "Nie powiodło się sprawdzenie czy program " + softwareName + "jest zainstalowany -> " + e.getMessage();
             JOptionPane.showMessageDialog(null, message, "Błąd", JOptionPane.ERROR_MESSAGE);

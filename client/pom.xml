@@ -30,7 +30,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.vncscreenshare.client.ClientApplication</mainClass>
+                            <mainClass>ClientApplication</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -46,6 +46,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <mainClass>ClientApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
